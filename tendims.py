@@ -24,7 +24,7 @@ class TenDimensionsClassifier:
 		                       glove/glove.42B.300d.wv
 		@param is_cuda: to enable cuda
 		"""
-		self.is_cuda = is_cuda 
+		self.is_cuda = is_cuda and torch.cuda.is_available()
 		self.models_dir = models_dir
 		self.embeddings_dir = embeddings_dir
 
@@ -37,20 +37,18 @@ class TenDimensionsClassifier:
 		#load models
 		self.dim2model = {}
 		self.dim2embedding = {}
+		print(f'Torch version: {torch.__version__}')
+		if self.is_cuda:
+			print(f'Torch CUDA device count : {torch.cuda.device_count()}')
+			print(f'Torch CUDA device name : {torch.cuda.get_device_name(0)}')
+		else:
+			print('CUDA not available. Instantiated the TenDimensionsClassifier with is_cuda=False')
+
 
 		for dim in self.dimensions_list:
 			model = LSTMClassifier(embedding_dim=300, hidden_dim=300)
 			if self.is_cuda:
-				print(f'Torch version: {torch.__version__}')
-				print(f'Torch CUDA available : {torch.cuda.is_available()}')
-				if torch.cuda.is_available():
-					print(f'Torch current device : {torch.cuda.current_device()}')
-					print(f'Torch device count : {torch.cuda.device_count()}')
-					print(f'Torch device name : {torch.cuda.get_device_name(0)}')
-					model.cuda()
-				else:
-					print('Cuda not available. Instantiated the TenDimensionsClassifier with CUDA=False')
-					self.is_cuda = False 
+				model.cuda()
 			model.eval()
 			for modelname in os.listdir(self.models_dir):
 				if ('-best.lstm' in modelname) & (dim in modelname):
