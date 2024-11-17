@@ -1,5 +1,7 @@
 numpy
 nltk
 torch
-gensim==3.8.3
 scikit-learn
+convokit
+scipy==1.10.1
+gensim==4.3.2
