@@ -73,7 +73,7 @@ class ExtractWordEmbeddings():
         if emb_type=='word2vec':
             self.UNK = self.model['UNK']
         print("Loaded word embeddings from %s!"%load_dir)
-        print("Vocab size: %d" %len(self.model)
+        print("Vocab size: %d" %len(self.model))
         return
 
     def fit(self,X):
