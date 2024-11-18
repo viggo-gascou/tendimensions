@@ -9,6 +9,7 @@ import nltk
 from nltk.tokenize import TweetTokenizer
 tokenize = TweetTokenizer().tokenize
 from nltk import sent_tokenize
+from tqdm import tqdm
 nltk.download('punkt')
 
 dimensions_list = ['support', 'knowledge', 'conflict', 'power', 'similarity', 'fun', 'status', 'trust', 'identity', 'romance']
@@ -45,7 +46,7 @@ class TenDimensionsClassifier:
 			print('CUDA not available. Instantiated the TenDimensionsClassifier with is_cuda=False')
 
 
-		for dim in self.dimensions_list:
+		for dim in tqdm(self.dimensions_list, desc="Loading models", position=0):
 			model = LSTMClassifier(embedding_dim=300, hidden_dim=300)
 			if self.is_cuda:
 				model.cuda()
@@ -60,6 +61,8 @@ class TenDimensionsClassifier:
 						em = self.em_word2vec
 					elif 'fasttext' in modelname:
 						em = self.em_fasttext
+					else:
+						raise Exception('Unrecognized embedding model in model name: %s'%modelname)
 					self.dim2model[dim] = model
 					self.dim2embedding[dim] = em
 					break
