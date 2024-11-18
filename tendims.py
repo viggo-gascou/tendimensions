@@ -30,8 +30,11 @@ class TenDimensionsClassifier:
 		self.embeddings_dir = embeddings_dir
 
 		#load embeddings
+		print("Loading 'GloVe' embeddings...")
 		self.em_glove = ExtractWordEmbeddings('glove' ,emb_dir=self.embeddings_dir)
+		print("Loading 'Word2vec' embeddings...")
 		self.em_word2vec = ExtractWordEmbeddings('word2vec', emb_dir=self.embeddings_dir)
+		print("Loading 'fastText' Embeddings...")
 		self.em_fasttext = ExtractWordEmbeddings('fasttext', emb_dir=self.embeddings_dir)
 		self.dimensions_list = ['support', 'knowledge', 'conflict', 'power', 'similarity', 'fun', 'status', 'trust', 'identity', 'romance']
 
